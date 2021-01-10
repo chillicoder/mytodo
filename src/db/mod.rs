@@ -9,6 +9,19 @@ pub fn establish_connection() -> SqliteConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", db))
 }
 
+pub fn delete_task(connection: &SqliteConnection, task_id: i32) -> usize {
+    let old_task = schema::task::table
+        .filter(schema::task::id.eq(task_id))
+        .first::<models::Task>(connection)
+        .expect("error loading task");
+
+    let num_deleted: usize = diesel::delete(&old_task)
+        .execute(connection)
+        .expect("error deleting task.");
+
+    return num_deleted
+}
+
 pub fn mark_task(connection: &SqliteConnection, task_id: i32, _status: bool) -> models::Task {
     let mut old_task = schema::task::table
         .filter(schema::task::id.eq(task_id))

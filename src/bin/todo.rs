@@ -1,11 +1,12 @@
 use std::env;
-use mytodo::db::{mark_task, create_task, query_task, establish_connection};
+use mytodo::db::{delete_task, mark_task, create_task, query_task, establish_connection};
 
 fn help() {
     println!("subcommands:");
     println!("\tnew <title>: create a new task");
     println!("\tshow: show list of tasks");
     println!("\tdone <task id>: mark task as done");
+    println!("\tdelete <task id>: delete task from the list");
 }
 
 fn main() {
@@ -21,8 +22,23 @@ fn main() {
         "new" => new_task(&args[2..]),
         "show" => show_tasks(&args[2..]),
         "done" => done_task(&args[2..]),
+        "delete" => del_task(&args[2..]),
         _ => help(),
     }
+}
+
+fn del_task(args: &[String]) {
+    if args.len() < 1 {
+        println!("delete> missing <task id>");
+        help();
+        return;
+    }
+
+    let conn = establish_connection();
+    let task_id = args[0].parse::<i32>().unwrap();
+    let deleted_tasks = delete_task(&conn, task_id);
+
+    println!("Deleted tasks: {}", deleted_tasks);
 }
 
 fn done_task(args: &[String]) {
