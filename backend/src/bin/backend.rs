@@ -1,7 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use mytodo::db::models::Task;
-use mytodo::db::query_task;
+use backend::db::models::Task;
+use backend::db::query_task;
 use rocket_contrib::databases::diesel;
 use rocket_contrib::json::Json;
 use serde::Serialize;

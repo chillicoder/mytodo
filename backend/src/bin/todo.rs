@@ -1,6 +1,6 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use mytodo::db::{create_task, delete_task, establish_connection, mark_task, query_task};
+use backend::db::{create_task, delete_task, establish_connection, mark_task, query_task};
 use std::env;
 
 fn help() {
