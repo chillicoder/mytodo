@@ -1,5 +1,7 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+
+use mytodo::db::{create_task, delete_task, establish_connection, mark_task, query_task};
 use std::env;
-use mytodo::db::{delete_task, mark_task, create_task, query_task, establish_connection};
 
 fn help() {
     println!("subcommands:");
@@ -87,4 +89,3 @@ fn show_tasks(args: &[String]) {
         }
     }
 }
-

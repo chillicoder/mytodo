@@ -5,8 +5,7 @@ pub mod schema;
 
 pub fn establish_connection() -> SqliteConnection {
     let db = "./testdb.sqlite3";
-    SqliteConnection::establish(db)
-        .unwrap_or_else(|_| panic!("Error connecting to {}", db))
+    SqliteConnection::establish(db).unwrap_or_else(|_| panic!("Error connecting to {}", db))
 }
 
 pub fn delete_task(connection: &SqliteConnection, task_id: i32) -> usize {
@@ -19,7 +18,7 @@ pub fn delete_task(connection: &SqliteConnection, task_id: i32) -> usize {
         .execute(connection)
         .expect("error deleting task.");
 
-    return num_deleted
+    return num_deleted;
 }
 
 pub fn mark_task(connection: &SqliteConnection, task_id: i32, _status: bool) -> models::Task {
@@ -28,7 +27,8 @@ pub fn mark_task(connection: &SqliteConnection, task_id: i32, _status: bool) -> 
         .first::<models::Task>(connection)
         .expect("error loading task");
 
-    let updated_rows = diesel::update(&old_task).set(schema::task::done.eq(true))
+    let updated_rows = diesel::update(&old_task)
+        .set(schema::task::done.eq(true))
         .execute(connection)
         .expect("error updating task");
 
@@ -55,4 +55,3 @@ pub fn query_task(connection: &SqliteConnection) -> Vec<models::Task> {
         .load::<models::Task>(connection)
         .expect("error loading tasks")
 }
-

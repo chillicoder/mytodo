@@ -1,14 +1,20 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
+use mytodo::db::models::Task;
+use mytodo::db::query_task;
+use rocket_contrib::databases::diesel;
+use rocket_contrib::json::Json;
+use serde::Serialize;
+
 #[macro_use]
 extern crate rocket;
-extern crate rocket_contrib;
 extern crate serde;
 
-use mytodo::db::models::Task;
-use mytodo::db::{query_task, establish_connection};
-use serde::Serialize;
-use rocket_contrib::json::Json;
+#[macro_use]
+extern crate rocket_contrib;
+
+#[database("sqlite_db")]
+struct MyDatabase(diesel::SqliteConnection);
 
 #[derive(Serialize)]
 struct JsonApiResponse {
@@ -16,11 +22,10 @@ struct JsonApiResponse {
 }
 
 #[get("/tasks")]
-fn tasks_get() -> Json<JsonApiResponse> {
-    let mut response = JsonApiResponse { data:  vec![], };
+fn tasks_get(conn: MyDatabase) -> Json<JsonApiResponse> {
+    let mut response = JsonApiResponse { data: vec![] };
 
-    let conn = establish_connection();
-    for task in query_task(&conn) {
+    for task in query_task(&*conn) {
         response.data.push(task);
     }
 
@@ -29,6 +34,7 @@ fn tasks_get() -> Json<JsonApiResponse> {
 
 fn main() {
     rocket::ignite()
+        .attach(MyDatabase::fairing())
         .mount("/", routes![tasks_get])
         .launch();
 }
