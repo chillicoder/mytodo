@@ -1,0 +1,8 @@
+[tasks.default]
+dependencies = ["create_wasm"]
+
+[tasks.create_wasm]
+comand = "wasm-pack"
+args = ["build", "--target", "web", "--out-name", "package", "--dev"]
+dependencies = ["build"]
+
