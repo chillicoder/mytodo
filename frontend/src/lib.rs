@@ -1,8 +1,6 @@
-#[macro_use]
-extern crate seed;
-use seed::prelude::*;
-use seed::{fetch, Request};
 use futures::Future;
+use seed::{fetch, Request};
+use seed::{prelude::*, *};
 
 use mytodo::{JsonApiResponse, Task};
 
@@ -13,7 +11,7 @@ enum Direction {
 }
 
 struct Model {
-    direction: Direction,
+    tasks: Vec<Task>,
 }
 
 #[derive(Clone, Debug)]
@@ -22,8 +20,7 @@ enum Msg {
 }
 
 fn update(msg: Msg, model: &mut Model, _orders: &mut impl Orders<Msg>) {
-    match msg {
-    }
+    match msg {}
 }
 
 fn view(model: &Model) -> impl View<Msg> {
@@ -55,4 +52,3 @@ fn init(_url: Url, orders: &mut impl Orders<Msg>) -> Model {
 pub fn render() {
     seed::App::build(init, update, view).finish().run();
 }
-
