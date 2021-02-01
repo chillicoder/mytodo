@@ -7,6 +7,8 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+rocket_cors = { version = "0.5.0", default-features = false }
+mytodo = { path = ".." }
 diesel = { version = "1.0.0", features = ["sqlite"] }
 rocket = "~0.4.2"
 serde = { version = "1.0", features = ["derive"] }
