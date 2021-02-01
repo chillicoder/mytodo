@@ -2,7 +2,7 @@
 dependencies = ["create_wasm"]
 
 [tasks.create_wasm]
-comand = "wasm-pack"
+command = "wasm-pack"
 args = ["build", "--target", "web", "--out-name", "package", "--dev"]
 dependencies = ["build"]
 
